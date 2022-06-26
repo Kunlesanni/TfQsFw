@@ -1,33 +1,57 @@
-provider "azurerm" {
-  alias           = "hubc"
-  subscription_id = "effec6ac-0c2f-40d8-ac3e-7ea8f2116d46"
-  tenant_id       = "1faf88fe-a998-4c5b-93c9-210a11d9a5c2"
-  client_id       = "8a0a2e91-fbc1-4606-bc1f-d43c84fd2aa8"
-  client_secret   = "Cvc8Q~TFVrkTkElEoG58NsiOwHn5EjJxC6YqLbgY"
-  features {}
+Variable "rg" {
+      default = ""
+      description = "Name of resource Group hwere the Firewall resource is"
 }
 
-data "azurerm_resource_group" "rgdata" {
-  name = "rg"
+Variable "afp" {
+      default = ""
+      description = "Name of azure firewall policy where rule collection group will be created"
 }
 
-data "azurerm_firewall_policy" "afpdata" {
-  name                = "var.afp"
-  resource_group_name = "data.azurerm_resource_group.rgdata.name"
+Variable "rule1" {
+type = map(string)
+description = "Details of rule to be applied"
+default = {
+      name                  = "in_T_I_azdc_addev"
+      protocols             = ["TCP", "UDP"]
+      source_addresses      = ["10.0.0.1"]
+      destination_addresses = ["192.168.1.1", "192.168.1.2"]
+      destination_ports     = ["80", "1000-2000"]
+    }
 }
 
-resource "azurerm_firewall_policy_rule_collection_group" "rcgname" {
-  name               = "var.rcg"
-  firewall_policy_id = data.azurerm_firewall_policy.afpdata.id
-  priority           = 500
-  
-  network_rule_collection {
-    name     = "azure_dcs"
-    priority = 400
-    action   = "Deny"
-    rule = var.rule1
-    rule = var.rule2
-    rule = var.rule3
-    rule = var.rule4   
-  }
+Variable "rule2" {
+type = map(string)
+description = "Details of rule to be applied"
+default = {
+      name                  = "in_U_I_azdc_addev"
+      protocols             = ["TCP", "UDP"]
+      source_addresses      = ["10.0.0.1"]
+      destination_addresses = ["192.168.1.1", "192.168.1.2"]
+      destination_ports     = ["80", "1000-2000"]
+    }
+}
+
+Variable "rule3" {
+type = map(string)
+description = "Details of rule to be applied"
+default = {
+      name                  = "in_T_I_5722_azdc_addev"
+      protocols             = ["TCP", "UDP"]
+      source_addresses      = ["10.0.0.1"]
+      destination_addresses = ["192.168.1.1", "192.168.1.2"]
+      destination_ports     = ["80", "1000-2000"]
+    }
+}
+
+Variable "rule4" {
+type = map(string)
+description = "Details of rule to be applied"
+default = {
+      name                  = "out_T_I_5722_azdc_addev"
+      protocols             = ["TCP", "UDP"]
+      source_addresses      = ["10.0.0.1"]
+      destination_addresses = ["192.168.1.1", "192.168.1.2"]
+      destination_ports     = ["80", "1000-2000"]
+    }
 }
