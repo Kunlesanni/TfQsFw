@@ -3,6 +3,11 @@ Variable "rg" {
       description = "Name of resource Group hwere the Firewall resource is"
 }
 
+Variable "afp" {
+      default = ""
+      description = "Name of azure firewall policy where rule collection group will be created"
+}
+
 Variable "rule1" {
 type = map(string)
 description = "Details of rule to be applied"
